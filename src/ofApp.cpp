@@ -1,8 +1,11 @@
+
+#include "Book.h"
 #include "ofApp.h"
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+	Book b("1984", "George Orwell", "978-0451524935");
+	std::cout << b.getTitle() << " by " << b.getAuthor() << std::endl;
 }
 
 //--------------------------------------------------------------
