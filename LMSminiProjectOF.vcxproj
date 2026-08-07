@@ -228,6 +228,7 @@
   <ItemGroup>
     <ClCompile Include="src\AbstractLibrary.cpp" />
     <ClCompile Include="src\Book.cpp" />
+    <ClCompile Include="src\BookRepository.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Member.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
@@ -237,6 +238,7 @@
   <ItemGroup>
     <ClInclude Include="src\AbstractLibrary.h" />
     <ClInclude Include="src\Book.h" />
+    <ClInclude Include="src\BookRepository.h" />
     <ClInclude Include="src\Member.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\PremiumMember.h" />
