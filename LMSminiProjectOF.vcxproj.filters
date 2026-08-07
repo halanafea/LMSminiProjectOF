@@ -25,6 +25,9 @@
     <ClCompile Include="src\BookRepository.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\MyLibrary.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -51,6 +54,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\BookRepository.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MyLibrary.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

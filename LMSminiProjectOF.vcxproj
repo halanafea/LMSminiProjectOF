@@ -231,6 +231,7 @@
     <ClCompile Include="src\BookRepository.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Member.cpp" />
+    <ClCompile Include="src\MyLibrary.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\PremiumMember.cpp" />
     <ClCompile Include="src\RegularMember.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="src\Book.h" />
     <ClInclude Include="src\BookRepository.h" />
     <ClInclude Include="src\Member.h" />
+    <ClInclude Include="src\MyLibrary.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\PremiumMember.h" />
     <ClInclude Include="src\RegularMember.h" />

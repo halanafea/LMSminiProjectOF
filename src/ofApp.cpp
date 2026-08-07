@@ -4,6 +4,7 @@
 #include "RegularMember.h"
 #include "PremiumMember.h"
 #include "BookRepository.h"
+#include "MyLibrary.h"
 //--------------------------------------------------------------
 void ofApp::setup(){
 	//Book b("1984", "George Orwell", "978-0451524935");
@@ -22,7 +23,7 @@ void ofApp::setup(){
 	PremiumMember prem("Bob", "M002");
 	std::cout << "Bob borrows b4: " << prem.borrowBook(&b4) << std::endl;*/
 
-	BookRepository repo;
+	/* BookRepository repo;
 	repo.addBook(Book("1984", "George Orwell", "978-0451524935"));
 	repo.addBook(Book("Brave New World", "Aldous Huxley", "978-0060850524"));
 
@@ -34,7 +35,33 @@ void ofApp::setup(){
 	}
 
 	Book * notFound = repo.findByIsbn("000-0000000000");
-	std::cout << "Search for missing ISBN returned: " << (notFound == nullptr ? "nullptr (correct)" : "unexpected result") << std::endl;
+	std::cout << "Search for missing ISBN returned: " << (notFound == nullptr ? "nullptr (correct)" : "unexpected result") << std::endl;*/
+
+	MyLibrary myLibrary;
+
+	Book b1("1984", "George Orwell", "978-0451524935");
+	Book b2("Brave New World", "Aldous Huxley", "978-0060850524");
+	myLibrary.addBook(&b1);
+	myLibrary.addBook(&b2);
+	std::cout << "Library has " << myLibrary.getBookCount() << " books" << std::endl;
+
+	RegularMember alice("Alice", "M001");
+	myLibrary.registerMember(&alice);
+
+	std::cout << "Alice borrows 1984: " << myLibrary.borrowBook("978-0451524935", &alice) << std::endl;
+	std::cout << "Alice borrows 1984 again (should fail, already out): "
+			  << myLibrary.borrowBook("978-0451524935", &alice) << std::endl;
+
+	std::cout << "Alice returns 1984: " << myLibrary.returnBook("978-0451524935", &alice) << std::endl;
+	std::cout << "Alice borrows 1984 again (should succeed now): "
+			  << myLibrary.borrowBook("978-0451524935", &alice) << std::endl;
+
+	// Test through the abstract interface - true polymorphism
+	AbstractLibrary * libInterface = &myLibrary;
+	Book b3("Fahrenheit 451", "Ray Bradbury", "978-1451673319");
+	libInterface->addBook(&b3);
+	std::cout << "Library now has " << myLibrary.getBookCount() << " books (added via AbstractLibrary*)" << std::endl;
+
 }
 
 //--------------------------------------------------------------
