@@ -228,11 +228,17 @@
   <ItemGroup>
     <ClCompile Include="src\Book.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Member.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="src\PremiumMember.cpp" />
+    <ClCompile Include="src\RegularMember.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Book.h" />
+    <ClInclude Include="src\Member.h" />
     <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\PremiumMember.h" />
+    <ClInclude Include="src\RegularMember.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

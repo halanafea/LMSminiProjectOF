@@ -10,6 +10,15 @@
     <ClCompile Include="src\Book.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Member.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PremiumMember.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RegularMember.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -21,6 +30,15 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Book.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Member.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PremiumMember.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RegularMember.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
