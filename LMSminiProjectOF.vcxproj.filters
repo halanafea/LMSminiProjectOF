@@ -19,6 +19,9 @@
     <ClCompile Include="src\RegularMember.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\AbstractLibrary.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -39,6 +42,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\RegularMember.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AbstractLibrary.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
