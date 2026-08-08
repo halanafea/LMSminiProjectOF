@@ -1,5 +1,6 @@
 #include "MyLibrary.h"
 #include "Member.h"
+#include <algorithm>
 
 void MyLibrary::addBook(Book * book) {
 	if (book) {
@@ -31,8 +32,14 @@ bool MyLibrary::returnBook(const std::string & isbn, Member * member) {
 	}
 
 	Book * book = bookRepository_.findByIsbn(isbn);
-	if (!book) {
-		return false;
+	if (!book || !book->isBorrowed()) {
+		return false; // doesn't exist, or isn't currently out at all
+	}
+
+	const auto & memberBooks = member->getBorrowedBooks();
+	bool memberHasThisBook = std::find(memberBooks.begin(), memberBooks.end(), book) != memberBooks.end();
+	if (!memberHasThisBook) {
+		return false; // this member never borrowed this book - reject the return
 	}
 
 	member->returnBook(book);

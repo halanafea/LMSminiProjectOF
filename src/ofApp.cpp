@@ -126,6 +126,12 @@ void ofApp::setup(){
 		std::cout << "Borrow via AbstractLibrary*: "
 				  << (libraryInterface->borrowBook("978-0743273565", &alice) ? "OK" : "FAILED") << std::endl;
 
+		std::cout << "\n-- Edge case tests --" << std::endl;
+		std::cout << "Borrow nonexistent ISBN: "
+				  << (library.borrowBook("000-0000000000", &alice) ? "OK" : "FAILED (correct)") << std::endl;
+		std::cout << "Bob tries to return Alice's book (should FAIL): "
+				  << (library.returnBook("978-0743273565", &bob) ? "OK" : "FAILED (correct)") << std::endl;
+
 		std::cout << "\n=== Demo complete ===" << std::endl;
 	
 
