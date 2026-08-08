@@ -18,6 +18,8 @@ public:
 
 	size_t getBookCount() const;
 
+	const std::vector<Book> & getAllBooks() const;
+
 private:
 	BookRepository bookRepository_; // Composition - owns book storage
 	std::vector<Member *> members_; // Association - non-owning references

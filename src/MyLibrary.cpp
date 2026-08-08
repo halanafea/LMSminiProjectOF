@@ -54,3 +54,8 @@ void MyLibrary::registerMember(Member * member) {
 size_t MyLibrary::getBookCount() const {
 	return bookRepository_.size();
 }
+
+// MyLibrary.cpp - add
+const std::vector<Book> & MyLibrary::getAllBooks() const {
+	return bookRepository_.getAllBooks();
+}

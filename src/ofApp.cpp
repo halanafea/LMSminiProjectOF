@@ -1,203 +1,173 @@
-
-#include "Book.h"
 #include "ofApp.h"
-#include "RegularMember.h"
 #include "PremiumMember.h"
-#include "BookRepository.h"
-#include "MyLibrary.h"
-//--------------------------------------------------------------
-void ofApp::setup(){
-	//Book b("1984", "George Orwell", "978-0451524935");
-	//std::cout << b.getTitle() << " by " << b.getAuthor() << std::endl;
-	/* Book b1("1984", "George Orwell", "978-0451524935");
-	Book b2("Brave New World", "Aldous Huxley", "978-0060850524");
-	Book b3("Fahrenheit 451", "Ray Bradbury", "978-1451673319");
-	Book b4("Animal Farm", "George Orwell", "978-0451526342");
+#include "RegularMember.h"
 
-	RegularMember reg("Alice", "M001");
-	std::cout << "Alice borrows b1: " << reg.borrowBook(&b1) << std::endl;
-	std::cout << "Alice borrows b2: " << reg.borrowBook(&b2) << std::endl;
-	std::cout << "Alice borrows b3: " << reg.borrowBook(&b3) << std::endl;
-	std::cout << "Alice borrows b4 (should fail, limit 3): " << reg.borrowBook(&b4) << std::endl;
+void ofApp::setup() {
+	ofBackground(20);
+	ofSetWindowTitle("Library Management System");
+	statusMessage = ""; // no status yet
+}
 
-	PremiumMember prem("Bob", "M002");
-	std::cout << "Bob borrows b4: " << prem.borrowBook(&b4) << std::endl;*/
+void ofApp::update() { }
 
-	/* BookRepository repo;
-	repo.addBook(Book("1984", "George Orwell", "978-0451524935"));
-	repo.addBook(Book("Brave New World", "Aldous Huxley", "978-0060850524"));
+void ofApp::draw() {
+	ofSetColor(255);
+	ofDrawBitmapString("Library Management System", 20, 20);
+	ofDrawBitmapString(kInstructions, 20, 40);
 
-	std::cout << "Repository has " << repo.size() << " books" << std::endl;
-
-	Book * found = repo.findByIsbn("978-0451524935");
-	if (found) {
-		std::cout << "Found: " << found->getTitle() << std::endl;
+	if (!statusMessage.empty()) {
+		ofSetColor(150, 200, 255);
+		ofDrawBitmapString(statusMessage, 20, 58);
 	}
 
-	Book * notFound = repo.findByIsbn("000-0000000000");
-	std::cout << "Search for missing ISBN returned: " << (notFound == nullptr ? "nullptr (correct)" : "unexpected result") << std::endl;*/
+	if (mode != InputMode::NONE) {
+		ofSetColor(255, 220, 100);
+		ofDrawBitmapString(prompt + inputBuffer + "_", 20, 76);
+	}
 
-	/* MyLibrary myLibrary;
-
-	Book b1("1984", "George Orwell", "978-0451524935");
-	Book b2("Brave New World", "Aldous Huxley", "978-0060850524");
-	myLibrary.addBook(&b1);
-	myLibrary.addBook(&b2);
-	std::cout << "Library has " << myLibrary.getBookCount() << " books" << std::endl;
-
-	RegularMember alice("Alice", "M001");
-	myLibrary.registerMember(&alice);
-
-	std::cout << "Alice borrows 1984: " << myLibrary.borrowBook("978-0451524935", &alice) << std::endl;
-	std::cout << "Alice borrows 1984 again (should fail, already out): "
-			  << myLibrary.borrowBook("978-0451524935", &alice) << std::endl;
-
-	std::cout << "Alice returns 1984: " << myLibrary.returnBook("978-0451524935", &alice) << std::endl;
-	std::cout << "Alice borrows 1984 again (should succeed now): "
-			  << myLibrary.borrowBook("978-0451524935", &alice) << std::endl;
-
-	// Test through the abstract interface - true polymorphism
-	AbstractLibrary * libInterface = &myLibrary;
-	Book b3("Fahrenheit 451", "Ray Bradbury", "978-1451673319");
-	libInterface->addBook(&b3);
-	std::cout << "Library now has " << myLibrary.getBookCount() << " books (added via AbstractLibrary*)" << std::endl;*/
-
-
-		std::cout << "=== Library Management System Demo ===\n"
-				  << std::endl;
-
-		// --- Composition: MyLibrary owns its BookRepository internally ---
-		MyLibrary library;
-
-		// --- Add books (Encapsulation: Book's fields only reachable via getters/setters) ---
-		Book b1("1984", "George Orwell", "978-0451524935");
-		Book b2("Brave New World", "Aldous Huxley", "978-0060850524");
-		Book b3("Fahrenheit 451", "Ray Bradbury", "978-1451673319");
-		Book b4("Animal Farm", "George Orwell", "978-0451526342");
-		Book b5("Brave New World Revisited", "Aldous Huxley", "978-0060748953");
-
-		library.addBook(&b1);
-		library.addBook(&b2);
-		library.addBook(&b3);
-		library.addBook(&b4);
-		library.addBook(&b5);
-		std::cout << "Library stocked with " << library.getBookCount() << " books.\n"
-				  << std::endl;
-
-		// --- Inheritance: RegularMember and PremiumMember both extend Member ---
-		RegularMember alice("Alice", "M001"); // limit: 3
-		PremiumMember bob("Bob", "M002"); // limit: 5
-
-		library.registerMember(&alice);
-		library.registerMember(&bob);
-
-		// --- Association: members borrow through the library, which links both sides ---
-		std::cout << "-- Alice (Regular, limit 3) borrows books --" << std::endl;
-		std::cout << "Borrow 1984: " << (library.borrowBook("978-0451524935", &alice) ? "OK" : "FAILED") << std::endl;
-		std::cout << "Borrow Brave New World: " << (library.borrowBook("978-0060850524", &alice) ? "OK" : "FAILED") << std::endl;
-		std::cout << "Borrow Fahrenheit 451: " << (library.borrowBook("978-1451673319", &alice) ? "OK" : "FAILED") << std::endl;
-		std::cout << "Borrow Animal Farm (should FAIL - at limit of 3): "
-				  << (library.borrowBook("978-0451526342", &alice) ? "OK" : "FAILED") << std::endl;
-		std::cout << "Alice currently holds " << alice.getBorrowedBooks().size() << " book(s).\n"
-				  << std::endl;
-
-		std::cout << "-- Bob (Premium, limit 5) borrows books --" << std::endl;
-		std::cout << "Borrow Animal Farm: " << (library.borrowBook("978-0451526342", &bob) ? "OK" : "FAILED") << std::endl;
-		std::cout << "Borrow Brave New World Revisited: " << (library.borrowBook("978-0060748953", &bob) ? "OK" : "FAILED") << std::endl;
-		std::cout << "Borrow 1984 (should FAIL - already borrowed by Alice): "
-				  << (library.borrowBook("978-0451524935", &bob) ? "OK" : "FAILED") << std::endl;
-		std::cout << "Bob currently holds " << bob.getBorrowedBooks().size() << " book(s).\n"
-				  << std::endl;
-
-		// --- Returning a book frees it up for someone else ---
-		std::cout << "-- Alice returns 1984 --" << std::endl;
-		std::cout << "Return 1984: " << (library.returnBook("978-0451524935", &alice) ? "OK" : "FAILED") << std::endl;
-		std::cout << "Now Bob borrows 1984: " << (library.borrowBook("978-0451524935", &bob) ? "OK" : "FAILED") << std::endl;
-		std::cout << "Bob currently holds " << bob.getBorrowedBooks().size() << " book(s).\n"
-				  << std::endl;
-
-		// --- Abstraction: same operations work through the AbstractLibrary interface ---
-		std::cout << "-- Using MyLibrary through an AbstractLibrary* pointer --" << std::endl;
-		AbstractLibrary * libraryInterface = &library;
-		Book b6("The Great Gatsby", "F. Scott Fitzgerald", "978-0743273565");
-		libraryInterface->addBook(&b6);
-		std::cout << "Book added via AbstractLibrary*. Library now has "
-				  << library.getBookCount() << " books." << std::endl;
-		std::cout << "Borrow via AbstractLibrary*: "
-				  << (libraryInterface->borrowBook("978-0743273565", &alice) ? "OK" : "FAILED") << std::endl;
-
-		std::cout << "\n-- Edge case tests --" << std::endl;
-		std::cout << "Borrow nonexistent ISBN: "
-				  << (library.borrowBook("000-0000000000", &alice) ? "OK" : "FAILED (correct)") << std::endl;
-		std::cout << "Bob tries to return Alice's book (should FAIL): "
-				  << (library.returnBook("978-0743273565", &bob) ? "OK" : "FAILED (correct)") << std::endl;
-
-		std::cout << "\n=== Demo complete ===" << std::endl;
-	
-
+	float afterBooks = drawBookList(20, 100);
+	drawMemberList(20, afterBooks + 20); // starts below books, same x now
 }
 
-//--------------------------------------------------------------
-void ofApp::update(){
-
+float ofApp::drawBookList(float x, float y) {
+	ofSetColor(200);
+	ofDrawBitmapString("Books:", x, y);
+	float lineY = y + 20;
+	for (const auto & book : library.getAllBooks()) {
+		std::string borrower = findBorrowerName(book.getIsbn());
+		std::string line = book.getTitle() + " by " + book.getAuthor() + " [" + book.getIsbn() + "]";
+		if (borrower.empty()) {
+			ofSetColor(120, 220, 120);
+			ofDrawBitmapString(line + " - available", x, lineY);
+		} else {
+			ofSetColor(220, 100, 100);
+			ofDrawBitmapString(line + " - borrowed by " + borrower, x, lineY);
+		}
+		lineY += 16;
+	}
+	return lineY; // report where the list ended
 }
 
-//--------------------------------------------------------------
-void ofApp::draw(){
-
+void ofApp::drawMemberList(float x, float y) {
+	ofSetColor(200);
+	ofDrawBitmapString("Members:", x, y);
+	float lineY = y + 20;
+	for (const auto & m : members) {
+		bool isPremium = dynamic_cast<PremiumMember *>(m.get()) != nullptr;
+		std::string type = isPremium ? "Premium" : "Regular";
+		std::string line = m->getName() + " [" + m->getMemberId() + "] (" + type + ") - "
+			+ ofToString(m->getBorrowedBooks().size()) + "/" + ofToString(m->getMaxBooksAllowed());
+		ofSetColor(255);
+		ofDrawBitmapString(line, x, lineY);
+		lineY += 16;
+	}
 }
 
-//--------------------------------------------------------------
-void ofApp::keyPressed(int key){
-
+std::string ofApp::findBorrowerName(const std::string & isbn) {
+	for (const auto & m : members) {
+		for (const auto * b : m->getBorrowedBooks()) {
+			if (b->getIsbn() == isbn) return m->getName();
+		}
+	}
+	return "";
 }
 
-//--------------------------------------------------------------
-void ofApp::keyReleased(int key){
-
+void ofApp::startMode(InputMode newMode, const std::string & newPrompt) {
+	mode = newMode;
+	prompt = newPrompt;
+	inputBuffer.clear();
 }
 
-//--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
+void ofApp::keyPressed(int key) {
+	if (mode == InputMode::NONE) {
+		if (key == 'a' || key == 'A')
+			startMode(InputMode::ADD_BOOK_TITLE, "Book title: ");
+		else if (key == 'm' || key == 'M')
+			startMode(InputMode::ADD_MEMBER_NAME, "Member name: ");
+		else if (key == 'b' || key == 'B')
+			startMode(InputMode::BORROW_ISBN, "Borrow - ISBN: ");
+		else if (key == 'r' || key == 'R')
+			startMode(InputMode::RETURN_ISBN, "Return - ISBN: ");
+		return;
+	}
 
+	if (mode == InputMode::ADD_MEMBER_TYPE) {
+		if (key == 'r' || key == 'R') {
+			members.push_back(std::make_unique<RegularMember>(tempMemberName, "M" + ofToString(members.size() + 1)));
+			library.registerMember(members.back().get());
+			statusMessage = "Added Regular member: " + tempMemberName;
+			mode = InputMode::NONE;
+		} else if (key == 'p' || key == 'P') {
+			members.push_back(std::make_unique<PremiumMember>(tempMemberName, "M" + ofToString(members.size() + 1)));
+			library.registerMember(members.back().get());
+			statusMessage = "Added Premium member: " + tempMemberName;
+			mode = InputMode::NONE;
+		}
+		return;
+	}
+
+	if (key == OF_KEY_RETURN)
+		handleEnter();
+	else if (key == OF_KEY_BACKSPACE) {
+		if (!inputBuffer.empty()) inputBuffer.pop_back();
+	} else if (key >= 32 && key <= 126)
+		inputBuffer += static_cast<char>(key);
 }
 
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
+void ofApp::handleEnter() {
+	switch (mode) {
+	case InputMode::ADD_BOOK_TITLE:
+		tempTitle = inputBuffer;
+		startMode(InputMode::ADD_BOOK_AUTHOR, "Book author: ");
+		break;
+	case InputMode::ADD_BOOK_AUTHOR:
+		tempAuthor = inputBuffer;
+		startMode(InputMode::ADD_BOOK_ISBN, "Book ISBN: ");
+		break;
+	case InputMode::ADD_BOOK_ISBN: {
+		Book newBook(tempTitle, tempAuthor, inputBuffer);
+		library.addBook(&newBook);
+		statusMessage = "Added book: " + tempTitle;
+		mode = InputMode::NONE;
+		break;
+	}
+	case InputMode::ADD_MEMBER_NAME:
+		tempMemberName = inputBuffer;
+		prompt = "Type (R=Regular, P=Premium): ";
+		inputBuffer.clear();
+		mode = InputMode::ADD_MEMBER_TYPE;
+		break;
+	case InputMode::BORROW_ISBN:
+		tempIsbn = inputBuffer;
+		startMode(InputMode::BORROW_MEMBER_ID, "Borrow - Member ID: ");
+		break;
+	case InputMode::BORROW_MEMBER_ID: {
+		Member * target = nullptr;
+		for (auto & m : members)
+			if (m->getMemberId() == inputBuffer) target = m.get();
+		if (target && library.borrowBook(tempIsbn, target))
+			statusMessage = target->getName() + " borrowed " + tempIsbn;
+		else
+			statusMessage = "Borrow failed - check ISBN, member ID, or limit";
+		mode = InputMode::NONE;
+		break;
+	}
+	case InputMode::RETURN_ISBN:
+		tempIsbn = inputBuffer;
+		startMode(InputMode::RETURN_MEMBER_ID, "Return - Member ID: ");
+		break;
+	case InputMode::RETURN_MEMBER_ID: {
+		Member * target = nullptr;
+		for (auto & m : members)
+			if (m->getMemberId() == inputBuffer) target = m.get();
+		if (target && library.returnBook(tempIsbn, target))
+			statusMessage = target->getName() + " returned " + tempIsbn;
+		else
+			statusMessage = "Return failed - check ISBN, member ID, or ownership";
+		mode = InputMode::NONE;
+		break;
+	}
+	default:
+		break;
+	}
 }
