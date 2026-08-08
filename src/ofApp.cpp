@@ -37,7 +37,7 @@ void ofApp::setup(){
 	Book * notFound = repo.findByIsbn("000-0000000000");
 	std::cout << "Search for missing ISBN returned: " << (notFound == nullptr ? "nullptr (correct)" : "unexpected result") << std::endl;*/
 
-	MyLibrary myLibrary;
+	/* MyLibrary myLibrary;
 
 	Book b1("1984", "George Orwell", "978-0451524935");
 	Book b2("Brave New World", "Aldous Huxley", "978-0060850524");
@@ -60,7 +60,74 @@ void ofApp::setup(){
 	AbstractLibrary * libInterface = &myLibrary;
 	Book b3("Fahrenheit 451", "Ray Bradbury", "978-1451673319");
 	libInterface->addBook(&b3);
-	std::cout << "Library now has " << myLibrary.getBookCount() << " books (added via AbstractLibrary*)" << std::endl;
+	std::cout << "Library now has " << myLibrary.getBookCount() << " books (added via AbstractLibrary*)" << std::endl;*/
+
+
+		std::cout << "=== Library Management System Demo ===\n"
+				  << std::endl;
+
+		// --- Composition: MyLibrary owns its BookRepository internally ---
+		MyLibrary library;
+
+		// --- Add books (Encapsulation: Book's fields only reachable via getters/setters) ---
+		Book b1("1984", "George Orwell", "978-0451524935");
+		Book b2("Brave New World", "Aldous Huxley", "978-0060850524");
+		Book b3("Fahrenheit 451", "Ray Bradbury", "978-1451673319");
+		Book b4("Animal Farm", "George Orwell", "978-0451526342");
+		Book b5("Brave New World Revisited", "Aldous Huxley", "978-0060748953");
+
+		library.addBook(&b1);
+		library.addBook(&b2);
+		library.addBook(&b3);
+		library.addBook(&b4);
+		library.addBook(&b5);
+		std::cout << "Library stocked with " << library.getBookCount() << " books.\n"
+				  << std::endl;
+
+		// --- Inheritance: RegularMember and PremiumMember both extend Member ---
+		RegularMember alice("Alice", "M001"); // limit: 3
+		PremiumMember bob("Bob", "M002"); // limit: 5
+
+		library.registerMember(&alice);
+		library.registerMember(&bob);
+
+		// --- Association: members borrow through the library, which links both sides ---
+		std::cout << "-- Alice (Regular, limit 3) borrows books --" << std::endl;
+		std::cout << "Borrow 1984: " << (library.borrowBook("978-0451524935", &alice) ? "OK" : "FAILED") << std::endl;
+		std::cout << "Borrow Brave New World: " << (library.borrowBook("978-0060850524", &alice) ? "OK" : "FAILED") << std::endl;
+		std::cout << "Borrow Fahrenheit 451: " << (library.borrowBook("978-1451673319", &alice) ? "OK" : "FAILED") << std::endl;
+		std::cout << "Borrow Animal Farm (should FAIL - at limit of 3): "
+				  << (library.borrowBook("978-0451526342", &alice) ? "OK" : "FAILED") << std::endl;
+		std::cout << "Alice currently holds " << alice.getBorrowedBooks().size() << " book(s).\n"
+				  << std::endl;
+
+		std::cout << "-- Bob (Premium, limit 5) borrows books --" << std::endl;
+		std::cout << "Borrow Animal Farm: " << (library.borrowBook("978-0451526342", &bob) ? "OK" : "FAILED") << std::endl;
+		std::cout << "Borrow Brave New World Revisited: " << (library.borrowBook("978-0060748953", &bob) ? "OK" : "FAILED") << std::endl;
+		std::cout << "Borrow 1984 (should FAIL - already borrowed by Alice): "
+				  << (library.borrowBook("978-0451524935", &bob) ? "OK" : "FAILED") << std::endl;
+		std::cout << "Bob currently holds " << bob.getBorrowedBooks().size() << " book(s).\n"
+				  << std::endl;
+
+		// --- Returning a book frees it up for someone else ---
+		std::cout << "-- Alice returns 1984 --" << std::endl;
+		std::cout << "Return 1984: " << (library.returnBook("978-0451524935", &alice) ? "OK" : "FAILED") << std::endl;
+		std::cout << "Now Bob borrows 1984: " << (library.borrowBook("978-0451524935", &bob) ? "OK" : "FAILED") << std::endl;
+		std::cout << "Bob currently holds " << bob.getBorrowedBooks().size() << " book(s).\n"
+				  << std::endl;
+
+		// --- Abstraction: same operations work through the AbstractLibrary interface ---
+		std::cout << "-- Using MyLibrary through an AbstractLibrary* pointer --" << std::endl;
+		AbstractLibrary * libraryInterface = &library;
+		Book b6("The Great Gatsby", "F. Scott Fitzgerald", "978-0743273565");
+		libraryInterface->addBook(&b6);
+		std::cout << "Book added via AbstractLibrary*. Library now has "
+				  << library.getBookCount() << " books." << std::endl;
+		std::cout << "Borrow via AbstractLibrary*: "
+				  << (libraryInterface->borrowBook("978-0743273565", &alice) ? "OK" : "FAILED") << std::endl;
+
+		std::cout << "\n=== Demo complete ===" << std::endl;
+	
 
 }
 
