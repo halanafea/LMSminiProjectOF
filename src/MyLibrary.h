@@ -24,4 +24,4 @@ private:
 	BookRepository bookRepository_; // Composition - owns book storage
 	std::vector<Member *> members_; // Association - non-owning references
 };
-#pragma once
+

@@ -13,4 +13,4 @@ public:
 	virtual bool borrowBook(const std::string & isbn, Member * member) = 0;
 	virtual bool returnBook(const std::string & isbn, Member * member) = 0;
 };
-#pragma once
+

@@ -13,4 +13,4 @@ public:
 private:
 	std::vector<Book> books_;
 };
-#pragma once
+

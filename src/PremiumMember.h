@@ -10,4 +10,4 @@ public:
 private:
 	static constexpr int kMaxBooks = 5;
 };
-#pragma once
+
